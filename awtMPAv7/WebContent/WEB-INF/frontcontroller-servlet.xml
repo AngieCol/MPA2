@@ -15,6 +15,8 @@
 	<mvc:annotation-driven/>
 	
 	<mvc:view-controller path="/" view-name="index"/>
+	<mvc:resources location="/WEB-INF/jsp/" mapping="/jsp/**"></mvc:resources>
+	
 	
 	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>

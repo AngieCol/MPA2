@@ -4,7 +4,7 @@ import java.util.List;
 
 
 public interface PanoramioService {
-	List<String> getPhotosPanoramio(String minimumLongitude, String minimumLatitude, String maximumLongitude, String maximumLatitude, String fromNumberPhoto, String toNumberPhoto, String size);
+	List<List<String>> getPhotosPanoramio( String latitude, String longitude,  String fromNumberPhoto, String toNumberPhoto, String size);
 }
 	
 	

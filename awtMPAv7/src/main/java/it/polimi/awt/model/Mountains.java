@@ -1,6 +1,8 @@
 package it.polimi.awt.model;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 
@@ -13,17 +15,14 @@ import javax.persistence.Table;
 @Table(name="Mountains")
 public class Mountains {
 	
-	@Id private Integer idMountains;
+	@Id @GeneratedValue(strategy=GenerationType.AUTO)
+	private Integer idMountains;
 	
 	
 	
 		private String name;
 		
-		private String latitude;
-		
-	
-		private String longitude;
-		
+				
 		private Float prominence;
 		
 		private Float elevation;
@@ -51,21 +50,7 @@ public class Mountains {
 			this.name = name;
 		}
 
-		public String getLatitude() {
-			return latitude;
-		}
-
-		public void setLatitude(String latitude) {
-			this.latitude = latitude;
-		}
-
-		public String getLongitude() {
-			return longitude;
-		}
-
-		public void setLongitude(String longitude) {
-			this.longitude = longitude;
-		}
+		
 
 		public Float getProminence() {
 			return prominence;

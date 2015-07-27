@@ -20,11 +20,15 @@ public class PersistenceServiceImplementation implements PersistenceService {
 //	@Override
 	public List<Mountains> findAll() {
 		
-		return mpRepository.findMountainByName("");
+		return mpRepository.findAllMountains();
 	}
 	
 	
-
+	public Mountains findMountainByName(String name) 
+	{
+		
+		return mpRepository.findMountainByName(name);
+	}
 	
 	
 	

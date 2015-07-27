@@ -4,7 +4,7 @@ import java.util.List;
 
 
 public interface FlickrService {
-	List<String> getPhotosFlickr(String name);
+	List<List<String>> getPhotosFlickr(String name, String lati, String longi);
 }
 	
 	
