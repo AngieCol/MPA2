@@ -231,16 +231,24 @@ public class HomeController {
 	 */
 	
 	//nuevo
-	@RequestMapping(value = "/MapSearch")
-	public String SearchInMap(@RequestParam(value="selected") List<Media> mediasInf, @RequestParam(value="name") String name , Model model) {
+	@RequestMapping(value = "/MapSearch" , method = RequestMethod.POST )
+	public String SearchInMap(@RequestParam(value="selected[]") Object[] mediasInf, @RequestParam(value="name") String name , Model model) {
+		System.out.println("llego???????????????????????????");
+		
+		
+		System.out.println("name:::::"+ name);
+		
+		System.out.println(mediasInf);
+		
 		Mountains m= ps.findMountainByName(name.toUpperCase());
 		
 		if(m!=null)
 		{
-			ps.insertMedias(mediasInf, m);
+			System.out.println("exito:::"+m.getLatitudeDecimal());
+			//ps.insertMedias(mediasInf, m);
 		}
 		
-		return "map";
+		return "/map";
 	}
 
 
