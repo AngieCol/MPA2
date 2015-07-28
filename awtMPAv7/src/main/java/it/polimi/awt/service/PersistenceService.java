@@ -8,7 +8,10 @@ import it.polimi.awt.model.*;
 
 public interface PersistenceService {
 
-	public List<Mountains> findAll(); 
+	public List<Mountains> findAllMountains(); 
 	public Mountains findMountainByName(String name) ;
+	public void insertMountains (List<Mountains>  mountains);
+	public List<Media> findAllMedias(String mountain);
+	public void insertMedias (List<Media>  medias, Mountains mountain);
 	
 }

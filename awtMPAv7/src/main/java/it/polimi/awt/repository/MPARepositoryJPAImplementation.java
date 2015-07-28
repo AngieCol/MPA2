@@ -20,11 +20,13 @@ public class MPARepositoryJPAImplementation implements MPARepository  {
 	@PersistenceContext
 	private EntityManager em;
 
-	
-	
+	/**
+	 * 
+	 */
+	@Override
 	public Mountains findMountainByName(String name) {
 		try{
-			TypedQuery<Mountains> query = em.createQuery("Select b from Mountains b where b.name='" + name + "'",	Mountains.class);
+			TypedQuery<Mountains> query = em.createQuery("Select mon from Mountains mon where mon.name='" + name + "'",	Mountains.class);
 			return query.getSingleResult();
 		}catch(Exception e){
 			
@@ -32,11 +34,18 @@ public class MPARepositoryJPAImplementation implements MPARepository  {
 		}
 	}
 
+	
+	
+	
+	/**
+	 * 
+	 */
+	@Override
 	public List<Mountains> findAllMountains() {
 		List<Mountains> mountains= new ArrayList<Mountains>();
 		
 		
-		TypedQuery<Mountains> query = em.createQuery("Select b from Mountains b",Mountains.class);
+		TypedQuery<Mountains> query = em.createQuery("Select mon from Mountains mon",Mountains.class);
 		
 		mountains=query.getResultList();
 		
@@ -44,6 +53,12 @@ public class MPARepositoryJPAImplementation implements MPARepository  {
 		
 	}
 	
+	
+	
+	/**
+	 * 
+	 */
+	@Override
 	public void insertMountains (List<Mountains>  mountains){
 		for (Mountains mountain : mountains) {
 			em.persist(mountain);
@@ -51,5 +66,37 @@ public class MPARepositoryJPAImplementation implements MPARepository  {
 		}
 	}
 	
+	
+	
+	/**
+	 * 
+	 */
+	@Override
+	public List<Media> findAllMedias(String mountain){
+		List<Media> medias= new ArrayList<Media>();
+		
+		
+		TypedQuery<Media> query = em.createQuery("Select med from Media med where med.idMountainMedia='" + mountain + "'",Media.class);
+		
+		medias=query.getResultList();
+		
+		return medias;
+	
+	}
+	
+	
+	
+	/**
+	 * 
+	 */
+	@Override
+	public void insertMedias (List<Media>  medias, Mountains mountain){
+		
+		for (Media media : medias) {
+			//media.setMountain(mountain);
+			em.persist(media);
+			em.close();
+		}
+	}
 	
 }

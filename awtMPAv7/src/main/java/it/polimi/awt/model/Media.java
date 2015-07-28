@@ -27,9 +27,9 @@ public class Media {
 	private String title;
 	
 
-		/*
+		
 	@ManyToOne
-	@JoinColumn(name="idMountains", referencedColumnName = "id")
+	@JoinColumn(name="idMontainMedia", referencedColumnName = "idMountains")
 	private Mountains mountain;
 	
 	
@@ -40,7 +40,7 @@ public class Media {
 	public void setMountain(Mountains mountain) {
 		this.mountain = mountain;
 	}
-*/
+
 		public String getType() {
 			return type;
 		}

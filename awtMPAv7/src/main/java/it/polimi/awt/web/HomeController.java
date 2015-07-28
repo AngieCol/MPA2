@@ -127,9 +127,9 @@ public class HomeController {
 			
 			boolean isMountain=false;
 			String longitude="", latitude="", fromNumberPhoto="0",  toNumberPhoto="100", size="medium";
-			
+			System.out.println("antes de la consulta");
 			Mountains m= ps.findMountainByName(name.toUpperCase());
-			
+			System.out.println("despuéss de la consulta");
 			
 			if(m==null)
 			{
@@ -139,6 +139,19 @@ public class HomeController {
 				longitude=coordinatesAndIsMountain[1];
 				latitude=coordinatesAndIsMountain[0];
 				model.addAttribute("isIndb","This mountain is not in the database");
+				
+				
+				
+				m= new Mountains();//nuevo
+				m.setLatitudeDecimal(latitude);//nuevo
+				m.setLongitudeDecimal(longitude);//nuevo
+				m.setName(name);//nuevo
+				List<Mountains> mons= new ArrayList<Mountains>();//nuevo
+				mons.add(m);//nuevo
+				
+				System.out.println("antes de insertar la montaña");
+				ps.insertMountains(mons);//nuevo
+				
 			}
 		
 			else{
@@ -147,6 +160,9 @@ public class HomeController {
 				System.out.println("Montañaaaaaaa::::"+ m.getName()+"-"+longitude+"-"+latitude);
 				isMountain=true;
 				model.addAttribute("isIndb","This mountain is already in the database");
+
+				
+				
 			}
 			
 
@@ -188,6 +204,8 @@ public class HomeController {
 					
 					model.addAttribute("listaMedias",mediasInf);
 					
+					
+					
 					return "Results";
 
 				}
@@ -211,9 +229,17 @@ public class HomeController {
 	/**
 	 * External Research
 	 */
+	
+	//nuevo
 	@RequestMapping(value = "/MapSearch")
-	public String SearchInMap( ) {
-
+	public String SearchInMap(@RequestParam(value="selected") List<Media> mediasInf, @RequestParam(value="name") String name , Model model) {
+		Mountains m= ps.findMountainByName(name.toUpperCase());
+		
+		if(m!=null)
+		{
+			ps.insertMedias(mediasInf, m);
+		}
+		
 		return "map";
 	}
 
@@ -256,8 +282,8 @@ public class HomeController {
 	@RequestMapping(value = "/showMountain")
 	public String showAll(Model model) {
 
-		model.addAttribute("lista",ps.findAll());
-		System.out.println("la cargo?");
+		model.addAttribute("lista",ps.findAllMountains());
+		System.out.println("la cargó?");
 		return "Mountains";
 	}
 

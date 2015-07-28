@@ -7,7 +7,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>Results of the Search</title>
-<link rel="stylesheet" href="<c:url value="/jsp/css/style.css"/>" />
+<%-- <link rel="stylesheet" href="<c:url value="/jsp/css/style.css"/>" /> --%>
 </head>
 <body>
 
@@ -16,9 +16,9 @@
 
 <c:forEach items="${listaMedias}" var="mediaIterator">     
 
-  http://stackoverflow.com/questions/12396828/how-to-get-checked-checkboxes-in-jsp
+  
 
-<h4><input type="checkbox" name="selected" value="${mediaIterator}"> Title: ${mediaIterator.title}</h4>   
+<input type="checkbox" name="selected" value="${listaMedias}"> Title: ${mediaIterator.title}  
 <img src=${mediaIterator.url} width="200" height="200"> 
 <br><br><br>
 
