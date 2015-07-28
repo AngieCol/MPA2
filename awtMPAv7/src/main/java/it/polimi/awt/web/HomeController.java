@@ -248,6 +248,15 @@ public class HomeController {
 			//ps.insertMedias(mediasInf, m);
 		}
 		
+		model.addAttribute("latitude",m.getLatitudeDecimal() );
+		model.addAttribute("longitude",m.getLongitudeDecimal() );
+		
+		
+		
+		
+		
+		
+		
 		return "/map";
 	}
 
