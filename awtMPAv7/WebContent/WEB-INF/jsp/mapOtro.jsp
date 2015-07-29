@@ -89,9 +89,8 @@ html, body, #map-canvas {
 </script>
 </head>
 <body>
-	
+	<div id="Mountain List"></div>
 	<div id="map-canvas">
-	</div>
 	<!-- Root element of PhotoSwipe. Must have class pswp. -->
 	<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
 
@@ -159,12 +158,8 @@ html, body, #map-canvas {
 			</div>
 
 		</div>
-<spring:url value="/" var="in"/>
-	<form action="${in}" method="post">
-		
-		
-		<input type="submit" value="Return To Home Page"/>
-	</form>
+
+	</div>
 	</div>
 	
 </body>

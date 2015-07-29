@@ -30,12 +30,7 @@
 	</form>
 
 
-<spring:url value="/MapSearch" var="map"/>
-	<form action="${map}" method="post">
-		
-		
-		<input type="submit" value="Go to Map"/>
-	</form>
+
 
 
 

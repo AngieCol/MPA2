@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
-<title>Results of the Search</title>
+<title>Lista Mountains</title>
 <link rel="stylesheet" href="jsp/css/style.css">
 </head>
 <body>
@@ -14,30 +14,25 @@
 
 
 
-	<h2>
-		<!-- 		These are the photos of <span style="color: #5935FF"font-weight:bold; font-style:italic;"> -->
-		${name} taken from social networks (${isIndb}):
-	</h2>
-
-	<spring:url value="/MapSearch" var="map" />
+	
+	<spring:url value="/MapSearchInternal" var="map" />
 	
 	<form method="post" action="${map} ">
-		<input type="hidden" name="name" value="${name}" />
+		
 
 		<div class="resultTable">
 
-			<c:forEach items="${listaMedias}" var="mediaIterator">
+			<c:forEach items="${mountains}" var="mediaIterator">
 				<div class="resultPhoto">
-					<img class="img" src="${mediaIterator.url }"/>
-					<input type="checkbox" name="selected" value="${mediaIterator.url}" />
-					<input type="hidden" name="titles[]" value="${mediaIterator.title}" />
-<%-- 					<input type="hidden" name="urls" value="${mediaIterator.url}" /> --%>
-<%-- 					<input type="hidden" name="urls" value="${mediaIterator}" /> --%>
+					
+					<input type="radio" name="name" value="${mediaIterator.mountain.name}" />${mediaIterator.mountain.name}
+
 
 				</div>
 			</c:forEach>
 		</div>
-		<input type="submit" value="Save Media" /> 
+		 <input type="submit"
+			value="Go To Map" />
 	</form>
 	
 	

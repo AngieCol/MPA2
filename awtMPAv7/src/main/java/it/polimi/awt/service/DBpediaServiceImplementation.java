@@ -25,8 +25,7 @@ public class DBpediaServiceImplementation implements DBpediaService{
 
 		
 
-		keywords.add("hola");//borrar
-		System.out.println("heyyyyyyyyyyy");
+		
 
 
 /*

@@ -69,9 +69,12 @@ public class GooglePlacesServiceImplementation implements GooglePlacesService{
 
 		List <String> urls = new ArrayList<String>();
 
-		String otherWords="mountain%20pick";
+		String otherWords="mountain%20pick%20";
 		String key="AIzaSyBEHHQjgBqP-KV1XRr8TKa5uUSFw4c5Ago";
 		String types="natural_feature";
+		
+		boolean isMountain=false;
+		
 
 		try {
 			URL googleURL = new URL("https://maps.googleapis.com/maps/api/place/textsearch/json?query="+otherWords+name+"&key="+key+"&types="+types);
@@ -88,30 +91,66 @@ public class GooglePlacesServiceImplementation implements GooglePlacesService{
 		
 		System.out.println("url::: "+"https://maps.googleapis.com/maps/api/place/textsearch/json?query="+otherWords+name+"&key="+key+"&types="+types);
 		
-		while (!(urlText = in.readLine()).contains("\"status\" : \"OK\"") && urlText!=null){
+		Boolean out= false;
+		
+		String lati="";
+		String longi="";
+		
+		while (!((urlText = in.readLine()).contains("\"status\" : \"OK\"")) && !(urlText.contains("\"status\" : \"ZERO_RESULTS\""))  && urlText!=null && !out)
+		{
 
-			if(urlText.contains("\"lat\":")){
-			//	System.out.println("urllllll text:::"+urlText);
+			
+			
+			if(urlText.contains("\"lat\" ")){
+				String prov=urlText.trim().split(" : ")[1];
+				
+				lati=prov.substring(0, prov.length()-1);
+				
+				System.out.println("urllllll text:::"+prov.substring(0, prov.length()-1) );
+			}
+
+			if(urlText.contains("\"lng\" ")){
+				longi= urlText.trim().split(" : ")[1];
 				
 			}
 
 		  System.out.println(""+urlText);
+		  
+		  if(longi!="" && lati!="")
+		  {
+			  isMountain=isMountain(lati, longi);
+			 if( isMountain)
+				 out=true;
+			 System.out.println("es montaña:::"+isMountain);
+		  }
 
-			
+		}	
 				
 			
 			
 
-		}
+		System.out.println("coordenadas:"+longi+","+lati+","+isMountain);
+		
+		
+		
+		
 		in.close();
-		} catch (Exception   e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return "0";
-		}
+		
+		
 
-		return "39.7391536,-104.9847034";
-		//return "41.698337,2.837753";
+		
+		if(urlText.contains("\"status\" : \"ZERO_RESULTS\"") || !isMountain)
+			return "notFound";
+		
+		else 
+			return lati+","+longi+","+isMountain;
+		
+		
+		} catch (Exception   e) {
+			
+			e.printStackTrace();
+			return "notFound";
+		}
 		
 	}
 	
@@ -172,7 +211,7 @@ public class GooglePlacesServiceImplementation implements GooglePlacesService{
 			DecimalFormat format = new DecimalFormat("#.#");
 			format.setDecimalFormatSymbols(symbols);
 			float f = format.parse(aa).floatValue();
-			if(f<1000)
+			if(f<700)
 			respuesta=false;
 			
 			in.close();
@@ -186,7 +225,7 @@ public class GooglePlacesServiceImplementation implements GooglePlacesService{
 		return respuesta;
 	}
 	
-	
+	/*
 	@Override
 	public String getCoordinates(String name) {
 		
@@ -210,7 +249,7 @@ public class GooglePlacesServiceImplementation implements GooglePlacesService{
 	}
 	
 	
-	
+	*/
 	
 	
 }

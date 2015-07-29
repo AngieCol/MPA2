@@ -29,21 +29,14 @@
 			<c:forEach items="${listaMedias}" var="mediaIterator">
 				<div class="resultPhoto">
 					<img class="img" src="${mediaIterator.url }"/>
-					<input type="checkbox" name="selected" value="${mediaIterator.url}" />
-					<input type="hidden" name="titles[]" value="${mediaIterator.title}" />
-<%-- 					<input type="hidden" name="urls" value="${mediaIterator.url}" /> --%>
-<%-- 					<input type="hidden" name="urls" value="${mediaIterator}" /> --%>
-
+					<input type="checkbox" name="selected" value="${mediaIterator}" />
+					<input type="hidden" name="titles" value="${mediaIterator.title}" />
+					<input type="hidden" name="urls" value="${mediaIterator.url}" />
 				</div>
 			</c:forEach>
 		</div>
-		<input type="submit" value="Save Media" /> 
-	</form>
-	
-	
-	<spring:url value="/" var="in"/>
-	<form action="${in}" method="post">
-		<input type="submit" value="Return To Home Page"/>
+		<input type="submit" value="Save Media" /> <input type="submit"
+			value="Return To Home Page" />
 	</form>
 	<!-- 	</form> -->
 

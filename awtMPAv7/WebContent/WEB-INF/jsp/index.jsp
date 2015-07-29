@@ -31,9 +31,9 @@
 
 
 
-<spring:url value="/MapSearch" var="map"/>
+<spring:url value="/MapSearchDB" var="map"/>
 	<form action="${map}" method="post">
-	<input type="submit" value="Go to Map"/>
+	<input type="submit" value="Go to Saved Mountains"/>
 	</form>
 
 

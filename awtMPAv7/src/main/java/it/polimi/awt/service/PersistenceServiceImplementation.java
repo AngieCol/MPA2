@@ -40,7 +40,7 @@ public class PersistenceServiceImplementation implements PersistenceService {
 
 
 	@Override
-	public List<Media> findAllMedias(String mountain) {
+	public List<Media> findAllMedias(int mountain) {
 		
 		return mpRepository.findAllMedias(mountain);
 	}
@@ -52,6 +52,9 @@ public class PersistenceServiceImplementation implements PersistenceService {
 		
 	}
 	
-	
+	@Override
+	public List<Media> findSavedMountains(){
+		return mpRepository.findSavedMountains();
+	}
 	
 }

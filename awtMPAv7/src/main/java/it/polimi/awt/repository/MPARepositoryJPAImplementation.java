@@ -72,11 +72,29 @@ public class MPARepositoryJPAImplementation implements MPARepository  {
 	 * 
 	 */
 	@Override
-	public List<Media> findAllMedias(String mountain){
+	public List<Media> findAllMedias(int mountain){
 		List<Media> medias= new ArrayList<Media>();
 		
 		
-		TypedQuery<Media> query = em.createQuery("Select med from Media med where med.idMountainMedia='" + mountain + "'",Media.class);
+		TypedQuery<Media> query = em.createQuery("Select med from Media med where med.mountain.idMountains='" + mountain + "'",Media.class);
+		
+		medias=query.getResultList();
+		
+		return medias;
+	
+	}
+	
+	
+	
+	/**
+	 * 
+	 */
+	@Override
+	public List<Media> findSavedMountains(){
+		List<Media> medias= new ArrayList<Media>();
+		
+		
+		TypedQuery<Media> query = em.createQuery("Select med from Media med group by med.mountain",Media.class);
 		
 		medias=query.getResultList();
 		
@@ -93,7 +111,7 @@ public class MPARepositoryJPAImplementation implements MPARepository  {
 	public void insertMedias (List<Media>  medias, Mountains mountain){
 		
 		for (Media media : medias) {
-			//media.setMountain(mountain);
+			media.setMountain(mountain);
 			
 			em.persist(media);
 			em.close();
