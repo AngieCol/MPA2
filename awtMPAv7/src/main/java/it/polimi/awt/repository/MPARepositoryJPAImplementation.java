@@ -94,6 +94,7 @@ public class MPARepositoryJPAImplementation implements MPARepository  {
 		
 		for (Media media : medias) {
 			//media.setMountain(mountain);
+			
 			em.persist(media);
 			em.close();
 		}

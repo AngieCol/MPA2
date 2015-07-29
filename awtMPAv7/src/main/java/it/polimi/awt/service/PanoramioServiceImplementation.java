@@ -71,9 +71,9 @@ public class PanoramioServiceImplementation implements PanoramioService{
 
 			while ((urlPhotos = in.readLine()) != null){
 
-				System.out.println("***********************************************************************************");
-				System.out.println("ojoPANORAMIOOO"+urlPhotos);
-				System.out.println("***********************************************************************************");
+			//	System.out.println("***********************************************************************************");
+				//System.out.println("ojoPANORAMIOOO"+urlPhotos);
+				//System.out.println("***********************************************************************************");
 				JSONObject object = new JSONObject(urlPhotos);
 				JSONArray photosAll = object.getJSONArray("photos");
 

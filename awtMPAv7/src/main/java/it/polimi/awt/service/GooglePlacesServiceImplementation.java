@@ -22,6 +22,8 @@ import java.util.regex.Matcher;
 
 
 
+
+
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.DocumentBuilder;
 
@@ -40,16 +42,18 @@ import java.io.File;
 
 
 
+
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
 
 @Service
 public class GooglePlacesServiceImplementation implements GooglePlacesService{
-
 
 
 
@@ -79,38 +83,31 @@ public class GooglePlacesServiceImplementation implements GooglePlacesService{
 
 		String urlText;
 
-		while ((urlText = in.readLine()) != null){
+		
+		System.out.println("uuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu::::");
+		
+		System.out.println("url::: "+"https://maps.googleapis.com/maps/api/place/textsearch/json?query="+otherWords+name+"&key="+key+"&types="+types);
+		
+		while (!(urlText = in.readLine()).contains("\"status\" : \"OK\"") && urlText!=null){
 
-		//System.out.println("urlText11:"+urlText);
-		
-		//System.out.println("urlText22:"+urlText.replaceAll("\\s+",""));
-		
+			if(urlText.contains("\"lat\":")){
+			//	System.out.println("urllllll text:::"+urlText);
+				
+			}
 
-		/*	JSONObject object = new JSONObject(urlPhotos);
-			JSONArray results = object.getJSONArray("results");
-			JSONObject geometry = results.getJSONObject(1);
-			JSONObject location = geometry.getJSONObject(0);
+		  System.out.println(""+urlText);
+
 			
-			 for (int i = 0; i < results.length(); ++i) {
-				    JSONObject geometry = results.getJSONObject(i);
-				    //JSONArray results = object.getJSONArray("geometry");
-				    
-				    for (int xi = 0; xi < results.length(); ++xi) {
-					    JSONObject loc = results.getJSONObject(xi);
-					   urls.add(photo.getString("geometry"));
-					}
-				   urls.add(photo.getString("geometry"));
-				}
+				
 			
-		
-		
-*/
+			
 
 		}
 		in.close();
-		} catch (IOException e) {
+		} catch (Exception   e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return "0";
 		}
 
 		return "39.7391536,-104.9847034";
@@ -129,6 +126,7 @@ public class GooglePlacesServiceImplementation implements GooglePlacesService{
 	@Override
 	public boolean isMountain(String lat, String longi) {
 
+		
 		
 		List <String> urls = new ArrayList<String>();
 		boolean respuesta= true;
@@ -194,6 +192,8 @@ public class GooglePlacesServiceImplementation implements GooglePlacesService{
 		
 		String coordinates= getLocationMountain(name);
 		
+		if(!coordinates.equals("0"))
+		{
 		
 		String[] coordinatesSplit= getLocationMountain(name).split(",");
 		String lat=coordinatesSplit[0];
@@ -202,6 +202,11 @@ public class GooglePlacesServiceImplementation implements GooglePlacesService{
 		boolean b= isMountain(lat, longi);
 		
 		return coordinates+","+b;
+		
+		}
+		
+		else
+			return coordinates;
 	}
 	
 	

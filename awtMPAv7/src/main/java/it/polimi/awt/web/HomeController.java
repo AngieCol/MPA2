@@ -19,8 +19,10 @@ import it.polimi.awt.service.PanoramioService;
 import it.polimi.awt.service.PersistenceService;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+
 
 
 
@@ -54,6 +56,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 
 import org.springframework.web.bind.annotation.RequestParam;
+
 
 
 
@@ -121,91 +124,102 @@ public class HomeController {
 
 		List<List<String>> medias= new ArrayList<List<String>>();
 		List<Media> mediasInf= new ArrayList<Media>();
+		//List<String> mediasInf= new ArrayList<String>();
 
 		if (name != null && name !="")
 		{
-			
+
 			boolean isMountain=false;
 			String longitude="", latitude="", fromNumberPhoto="0",  toNumberPhoto="100", size="medium";
-			System.out.println("antes de la consulta");
+			//	System.out.println("antes de la consulta");
 			Mountains m= ps.findMountainByName(name.toUpperCase());
-			System.out.println("despuéss de la consulta");
-			
+			//	System.out.println("despuéss de la consulta");
+
 			if(m==null)
 			{
-				String[] coordinatesAndIsMountain=gs.getCoordinates(name.replaceAll(" ", "%20")).split(",");
-				System.out.println("coordinatesAndIsMountain:::"+coordinatesAndIsMountain[2]+":::");
-				isMountain= coordinatesAndIsMountain[2].contains("true");
-				longitude=coordinatesAndIsMountain[1];
-				latitude=coordinatesAndIsMountain[0];
-				model.addAttribute("isIndb","This mountain is not in the database");
-				
-				
-				
-				m= new Mountains();//nuevo
-				m.setLatitudeDecimal(latitude);//nuevo
-				m.setLongitudeDecimal(longitude);//nuevo
-				m.setName(name);//nuevo
-				List<Mountains> mons= new ArrayList<Mountains>();//nuevo
-				mons.add(m);//nuevo
-				
-				System.out.println("antes de insertar la montaña");
-				ps.insertMountains(mons);//nuevo
-				
+				String coordinates=gs.getCoordinates(name.replaceAll(" ", "%20"));
+				if(!coordinates.equals("0"))
+				{
+					String[] coordinatesAndIsMountain=coordinates.split(",");
+					System.out.println("coordinatesAndIsMountain:::"+coordinatesAndIsMountain[2]+":::");
+					isMountain= coordinatesAndIsMountain[2].contains("true");
+					longitude=coordinatesAndIsMountain[1];
+					latitude=coordinatesAndIsMountain[0];
+					model.addAttribute("isIndb","This mountain is not in the database");
+
+
+
+					m= new Mountains();//nuevo
+					m.setLatitudeDecimal(latitude);//nuevo
+					m.setLongitudeDecimal(longitude);//nuevo
+					m.setName(name);//nuevo
+					List<Mountains> mons= new ArrayList<Mountains>();//nuevo
+					mons.add(m);//nuevo
+
+					//	System.out.println("antes de insertar la montaña");
+					ps.insertMountains(mons);//nuevo
+
+				}
+
+				else{
+					model.addAttribute("error", "This mountain wasn't found by the service. Please change the keywords of the search.");
+					return "errorPage";
+				}
+
 			}
-		
+
 			else{
 				longitude=m.getLongitudeDecimal();
 				latitude=m.getLatitudeDecimal();
-				System.out.println("Montañaaaaaaa::::"+ m.getName()+"-"+longitude+"-"+latitude);
+				//System.out.println("Montañaaaaaaa::::"+ m.getName()+"-"+longitude+"-"+latitude);
 				isMountain=true;
 				model.addAttribute("isIndb","This mountain is already in the database");
 
-				
-				
+
+
 			}
-			
+
 
 
 			if(isMountain)
 			{
 
 
-				
+
 				medias.addAll(flickerService.getPhotosFlickr(name, latitude, longitude));
-				System.out.println("ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo");
+				//System.out.println("ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo");
 
 
 				medias.addAll(panoramioService.getPhotosPanoramio(latitude, longitude, fromNumberPhoto, toNumberPhoto, size));
-				System.out.println("ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo");
-				System.out.println("mediaSize::"+medias.size());
+				//System.out.println("ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo");
+				//System.out.println("mediaSize::"+medias.size());
 
 				if (medias.size()==0)
 					return "notFound";
 				else{
-					
+
 					model.addAttribute("name", name);
 
-					
+
 					for(int p=0;p<medias.size();p++)
 					{
-						
-							Media med= new Media();
-							med.setTitle(medias.get(p).get(0));
-							med.setUrl(medias.get(p).get(1));
-							med.setLatitudeDecimal(medias.get(p).get(2));
-							med.setLongitudeDecimal(medias.get(p).get(3));
 
-							System.out.println(medias.get(p).get(0));
-						
-							mediasInf.add(med);
+						Media med= new Media();
+						med.setTitle(medias.get(p).get(0));
+						med.setUrl(medias.get(p).get(1));
+						med.setLatitudeDecimal(medias.get(p).get(2));
+						med.setLongitudeDecimal(medias.get(p).get(3));
+
+					//	System.out.println(medias.get(p).get(0));
+
+						mediasInf.add(med);
 
 					}
-					
+
 					model.addAttribute("listaMedias",mediasInf);
-					
-					
-					
+
+
+
 					return "Results";
 
 				}
@@ -229,34 +243,44 @@ public class HomeController {
 	/**
 	 * External Research
 	 */
+
 	
-	//nuevo
 	@RequestMapping(value = "/MapSearch" , method = RequestMethod.POST )
-	public String SearchInMap(@RequestParam(value="selected[]") Object[] mediasInf, @RequestParam(value="name") String name , Model model) {
-		System.out.println("llego???????????????????????????");
+	public String SearchInMap(@RequestParam(value="selected") String[] mediasInf, @RequestParam(value="titles[]") String[] titles, @RequestParam(value="name") String name , Model model) {
+
 		
-		
-		System.out.println("name:::::"+ name);
-		
-		System.out.println(mediasInf);
 		
 		Mountains m= ps.findMountainByName(name.toUpperCase());
+
+		
+		List<Media> mediasArray= new ArrayList<Media>();
 		
 		if(m!=null)
 		{
 			System.out.println("exito:::"+m.getLatitudeDecimal());
-			//ps.insertMedias(mediasInf, m);
+			
+			
+			for (int i=0; i< mediasInf.length; i++)
+			{
+				System.out.println("exituuuuuuo:::"+mediasInf[i].toString());
+				Media med=new Media();
+				med.setUrl(mediasInf[i].toString());
+				
+				mediasArray.add(med);
+				
+			}
+			ps.insertMedias(mediasArray, m);
 		}
-		
+
 		model.addAttribute("latitude",m.getLatitudeDecimal() );
 		model.addAttribute("longitude",m.getLongitudeDecimal() );
-		
-		
-		
-		
-		
-		
-		
+
+		model.addAttribute("title",m);
+
+
+
+
+
 		return "/map";
 	}
 

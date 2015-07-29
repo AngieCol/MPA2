@@ -1,92 +1,110 @@
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ page language="java" contentType="text/html; charset=US-ASCII"
-    pageEncoding="US-ASCII"%>
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>    
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<!DOCTYPE html>
 <html>
 <head>
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+<meta charset="utf-8">
+<title>Simple markers</title>
+<!-- Core CSS file -->
+<link rel="stylesheet" href="jsp/photoswipe/css/photoswipe.css"> 
 
-
-<link rel="stylesheet" href="<c:url value="/jsp/css/photoswipe.css"/>" />
-
-<link rel="stylesheet"
-	href="<c:url value="/jsp/default-skin/default-skin.css"/>">
-
-
+<!-- Skin CSS file (styling of UI - buttons, caption, etc.)
+     In the folder of skin CSS file there are also:
+     - .png and .svg icons sprite, 
+     - preloader.gif (for browsers that do not support CSS animations) -->
+<link rel="stylesheet" href="jsp/default/default-skin.css"> 
 
 <!-- Core JS file -->
-<script src="<c:url value="/jsp/js/photoswipe.min.js"/>"></script>
+<script src="jsp/js/photoswipe.min.js"></script> 
 
 <!-- UI JS file -->
-<script src="<c:url value="/jsp/js/photoswipe-ui-default.min.js"/>"></script>
+<script src="jsp/js/photoswipe-ui-default.min.js"></script> 
+<style>
+html, body, #map-canvas {
+	height: 100%;
+	margin: 0;
+	padding: 0;
+}
+</style>
+<script
+	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBEHHQjgBqP-KV1XRr8TKa5uUSFw4c5Ago"></script>
+<script>
+	function initialize() {
+		
+		//definizione latitudine e longitudine
+		var myLatlng = new google.maps.LatLng("${latitude}","${longitude}");
+		
+		//Opzioni della mappa
+		var mapOptions = {
+			zoom : 7,
+			center : myLatlng
+		}
+		
+		//Inizializzazione mappa
+		var map = new google.maps.Map(document.getElementById('map-canvas'),
+				mapOptions);
 
+		//creazione del marker
+		var marker = new google.maps.Marker({
+			position : myLatlng,
+			map : map,
+			icon : 'jsp/images/icon.png',
+			title : "${title}"
+		});
+		
+		google.maps.event.addListener(marker, 'click', function(){
+			var pswpElement = document.querySelectorAll('.pswp')[0];
 
+			// build items array
+			var items = [
+			    {
+			        src: 'http://www.calcioweb.eu/wp-content/uploads/2013/09/milito.jpg',
+			        w: 600,
+			        h: 400
+			    },
+			    {
+			        src: 'https://placekitten.com/1200/900',
+			        w: 1200,
+			        h: 900
+			    }
+			];
 
+			// define options (if needed)
+			var options = {
+			    // optionName: 'option value'
+			    // for example:
+			    index: 0 // start at first slide
+			};
 
+			// Initializes and opens PhotoSwipe
+			var gallery = new PhotoSwipe( pswpElement, PhotoSwipeUI_Default, items, options);
+			gallery.init();
+		});
+		
+	}
 
-
-<!-- <script type="text/javascript" -->
-<!-- 	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBEHHQjgBqP-KV1XRr8TKa5uUSFw4c5Ago"> -->
 	
-
-<script type="text/javascript">
-
-var openPhotoSwipe = function() {
-    var pswpElement = document.querySelectorAll('.pswp')[0];
-
-    // build items array
-    var items = [
-        {
-            src: 'https://farm2.staticflickr.com/1043/5186867718_06b2e9e551_b.jpg',
-            w: 964,
-            h: 1024
-        },
-        {
-            src: 'https://farm7.staticflickr.com/6175/6176698785_7dee72237e_b.jpg',
-            w: 1024,
-            h: 683
-        }
-    ];
-    
-    // define options (if needed)
-    var options = {
-             // history & focus options are disabled on CodePen        
-        history: false,
-        focus: false,
-
-        showAnimationDuration: 0,
-        hideAnimationDuration: 0
-        
-    };
-    
-    var gallery = new PhotoSwipe( pswpElement, PhotoSwipeUI_Default, items, options);
-    gallery.init();
-};
-
-openPhotoSwipe();
-
-document.getElementById('btn').onclick = openPhotoSwipe;
-
+	//caricamento mappa
+	google.maps.event.addDomListener(window, 'load', initialize);
 </script>
 </head>
 <body>
-	
-	
-	<button id="btn">Open PhotoSwipe</button>
-
-<!-- Root element of PhotoSwipe. Must have class pswp. -->
+	<div id="map-canvas"></div>
+	<!-- Root element of PhotoSwipe. Must have class pswp. -->
 <div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
 
     <!-- Background of PhotoSwipe. 
-         It's a separate element, as animating opacity is faster than rgba(). -->
+         It's a separate element as animating opacity is faster than rgba(). -->
     <div class="pswp__bg"></div>
 
     <!-- Slides wrapper with overflow:hidden. -->
     <div class="pswp__scroll-wrap">
 
-        <!-- Container that holds slides. PhotoSwipe keeps only 3 slides in DOM to save memory. -->
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
         <div class="pswp__container">
-            <!-- don't modify these 3 pswp__item elements, data is added later on -->
             <div class="pswp__item"></div>
             <div class="pswp__item"></div>
             <div class="pswp__item"></div>
@@ -134,11 +152,10 @@ document.getElementById('btn').onclick = openPhotoSwipe;
                 <div class="pswp__caption__center"></div>
             </div>
 
-          </div>
-
         </div>
 
+    </div>
+
 </div>
-	
 </body>
 </html>

@@ -63,7 +63,7 @@ public class FlickrServiceImplemantation implements FlickrService
 			
 			
 			photo = (Photo) photoIterator.next();
-			System.out.println(i + " - DescriptionFLICKR: " + photo.getSmallUrl()+":::" +photo.getTitle());
+			//System.out.println(i + " - DescriptionFLICKR: " + photo.getSmallUrl()+":::" +photo.getTitle());
 			
 			
 			listaInfo.add(photo.getTitle());
